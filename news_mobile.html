@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Daily News — Mobile</title>
+
+<style>
+  /* Mobile-first base */
+  :root{
+    --bg: #ffffff;
+    --surface: #ffffff;
+    --headline: #000000;
+    --body: #333333;
+    --accent: #1976D2;
+    --divider: #E0E0E0;
+    --card-border: #E0E0E0;
+    --radius: 14px;
+    --max-width: 420px;
+    --shadow: 0 6px 18px rgba(12,12,12,0.06);
+    --tap-size: 48px;
+  }
+
+  /* Dark theme variables (applied when .dark on <html>) */
+  html.dark {
+    --bg: #121212;
+    --surface: #1E1E1E;
+    --headline: #FFFFFF;
+    --body: #E0E0E0;
+    --accent: #2196F3;
+    --divider: #333333;
+    --card-border: #333333;
+    --shadow: none;
+  }
+
+  /* Basic page layout */
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0;
+    font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+    background: var(--bg);
+    color: var(--body);
+    -webkit-font-smoothing:antialiased;
+    -moz-osx-font-smoothing:grayscale;
+    display: flex;
+    justify-content: center;
+    padding: 12px;
+  }
+
+  .app {
+    width: 100%;
+    max-width: var(--max-width);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  /* Header */
+  header.app-header {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+    padding: 12px;
+    border-bottom: 1px solid var(--divider);
+    background: transparent;
+  }
+  .brand {
+    font-weight:800;
+    color: var(--headline);
+    font-size: 18px;
+    letter-spacing: -0.2px;
+  }
+
+  /* Toggle button */
+  .theme-toggle {
+    display:flex;
+    align-items:center;
+    gap:6px;
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    padding:6px;
+    border-radius: 999px;
+    width: fit-content;
+  }
+  .toggle-btn {
+    width: var(--tap-size);
+    height: var(--tap-size);
+    display:grid;
+    place-items:center;
+    cursor: pointer;
+    border-radius: 999px;
+    transition: transform .18s ease, background .18s;
+    user-select: none;
+  }
+  .toggle-btn:active{ transform: scale(.96); }
+  .sun { font-size:18px; color:#FFB74D; }
+  .moon { font-size:18px; color:#81D4FA; }
+
+  /* Main list */
+  main.feed {
+    padding: 12px;
+    display:flex;
+    flex-direction:column;
+    gap:12px;
+  }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    box-shadow: var(--shadow);
+  }
+
+  .card img {
+    width:100%;
+    height: 180px;
+    object-fit: cover;
+    display:block;
+  }
+
+  .card-content {
+    padding: 12px;
+  }
+
+  .headline {
+    color: var(--headline);
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    line-height: 1.2;
+  }
+
+  .preview {
+    color: var(--body);
+    font-size: 13px;
+    margin: 0 0 8px 0;
+    opacity: 0.95;
+  }
+
+  .read-more {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 13px;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  details[open] summary::after { content: "▲"; margin-left:8px; font-size: 11px; color: var(--body); }
+  details summary::after { content: "▼"; margin-left:8px; font-size:11px; color: var(--body); }
+
+  details summary {
+    list-style:none;
+    cursor: pointer;
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 13px;
+    display:inline-flex;
+    align-items:center;
+    gap:6px;
+  }
+
+  details p {
+    margin-top: 8px;
+    color: var(--body);
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* Settings section */
+  section.settings {
+    padding: 12px;
+    border-top: 1px solid var(--divider);
+    background: transparent;
+  }
+  .settings-row {
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:12px;
+  }
+  .settings-title {
+    font-weight:700;
+    color: var(--headline);
+  }
+  .settings-sub {
+    color: var(--body);
+    font-size: 13px;
+    margin-top:4px;
+  }
+
+  /* Footer caption */
+  footer.caption {
+    padding: 12px;
+    font-size:12px;
+    color: var(--body);
+    opacity: 0.85;
+    border-top:1px solid var(--divider);
+    line-height: 1.4;
+  }
+
+  /* Bottom nav (optional small nav) */
+  nav.bottom-nav {
+    display:flex;
+    gap:8px;
+    justify-content:space-between;
+    padding: 8px;
+    border-top:1px solid var(--divider);
+    background: transparent;
+  }
+  .nav-item {
+    flex:1;
+    text-align:center;
+    padding:8px 6px;
+    border-radius: 10px;
+    color: var(--body);
+    font-size: 12px;
+  }
+  .nav-item .icon { display:block; font-size:18px; margin-bottom:4px; color: var(--body); }
+
+  /* accessible focus */
+  .toggle-btn:focus, summary:focus, .nav-item:focus, .read-more:focus {
+    outline: 3px solid rgba(33,150,243,0.18);
+    outline-offset: 3px;
+  }
+
+  /* Responsive tweaks (small mobiles) */
+  @media (max-width:360px){
+    .card img{ height:150px; }
+    .headline{ font-size:15px; }
+  }
+</style>
+</head>
+<body>
+<div class="app" role="application" aria-label="Daily News mobile app">
+
+  <!-- Header -->
+  <header class="app-header" role="banner">
+    <div class="brand">Daily News</div>
+
+    <div class="theme-toggle" aria-hidden="false">
+      <div class="toggle-btn" id="btn-sun" role="button" aria-label="Switch to light theme" tabindex="0">
+        <span class="sun" aria-hidden="true">🌞</span>
+      </div>
+      <div class="toggle-btn" id="btn-moon" role="button" aria-label="Switch to dark theme" tabindex="0">
+        <span class="moon" aria-hidden="true">🌙</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Feed -->
+  <main class="feed" role="main" aria-label="News feed">
+
+    <!-- Article 1 (uses uploaded image) -->
+    <article class="card" aria-labelledby="h1">
+      <img src="/mnt/data/fe0877a1-447e-4cc2-9077-faa15129c60a.png" alt="Finger on smartphone showing market graphs" />
+      <div class="card-content">
+        <h2 id="h1" class="headline">Global Markets Rally Amid Economic Optimism</h2>
+        <p class="preview">Stock markets around the world surged today as new data signaled a recovering economy...</p>
+
+        <details>
+          <summary>Read Full Article →</summary>
+          <p>Global markets rallied strongly today as investor confidence grew in response to positive economic indicators. Analysts attribute this rise to increased consumer spending, improved employment rates, and strong corporate earnings reports. Experts warn, however, that inflationary pressures may still pose challenges in the coming months.</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- Article 2 -->
+    <article class="card" aria-labelledby="h2">
+      <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop" alt="AI technology concept on screen" />
+      <div class="card-content">
+        <h2 id="h2" class="headline">Tech Innovations Shape the Future of AI</h2>
+        <p class="preview">Artificial Intelligence continues to advance rapidly with breakthroughs in generative models...</p>
+
+        <details>
+          <summary>Read Full Article →</summary>
+          <p>AI research has entered a new era with innovations in generative models and advanced neural networks. From self-driving cars to natural language assistants, these technologies are reshaping industries worldwide. Ethical considerations and regulations remain critical to ensure AI development benefits society at large.</p>
+        </details>
+      </div>
+    </article>
+
+    <!-- Article 3 -->
+    <article class="card" aria-labelledby="h3">
+      <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop" alt="Smoggy city and climate visuals" />
+      <div class="card-content">
+        <h2 id="h3" class="headline">Climate Change Conference Calls for Urgent Action</h2>
+        <p class="preview">World leaders convened to discuss critical measures to combat climate change and reduce emissions...</p>
+
+        <details>
+          <summary>Read Full Article →</summary>
+          <p>At the international climate conference, leaders urged immediate and coordinated global action to tackle rising temperatures and environmental degradation. Agreements focused on renewable energy investment, reducing carbon footprints, and sustainable development initiatives. Activists, however, stressed that more ambitious steps are needed.</p>
+        </details>
+      </div>
+    </article>
+
+  </main>
+
+  <!-- Settings -->
+  <section class="settings" aria-labelledby="settings-title">
+    <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div>
+        <div id="settings-title" class="settings-title">Appearance</div>
+        <div class="settings-sub" id="theme-sub">🌞 Light Mode</div>
+      </div>
+
+      <!-- Accessible switch (visual toggle handled by JS) -->
+      <div style="display:flex;align-items:center;gap:8px;">
+        <label for="dark-switch" style="display:none">Dark mode</label>
+        <input id="dark-switch" type="checkbox" aria-label="Toggle dark mode" style="width:44px;height:28px" />
+      </div>
+    </div>
+  </section>
+
+  <!-- Caption -->
+  <footer class="caption" role="contentinfo">
+    Dark Mode improves readability in low-light environments, reduces eye strain during night reading, and can extend battery life on OLED displays. This layout uses accessible colors and contrast to meet WCAG AA guidelines.
+  </footer>
+
+  <!-- Optional small bottom nav -->
+  <nav class="bottom-nav" aria-label="Bottom navigation">
+    <a class="nav-item" href="#" aria-label="Home">
+      <span class="icon">🏠</span>Home
+    </a>
+    <a class="nav-item" href="#" aria-label="Search">
+      <span class="icon">🔎</span>Search
+    </a>
+    <a class="nav-item" href="#" aria-label="Bookmarks">
+      <span class="icon">🔖</span>Bookmarks
+    </a>
+    <a class="nav-item" href="#" aria-label="Settings">
+      <span class="icon">⚙️</span>Settings
+    </a>
+  </nav>
+</div>
+
+<script>
+  // Theme management
+  const root = document.documentElement;
+  const darkSwitch = document.getElementById('dark-switch');
+  const btnSun = document.getElementById('btn-sun');
+  const btnMoon = document.getElementById('btn-moon');
+  const themeSub = document.getElementById('theme-sub');
+
+  // Determine initial theme: saved preference > prefers-color-scheme
+  const saved = localStorage.getItem('news_theme');
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  let isDark = (saved === 'dark') || (saved === null && prefersDark);
+
+  function applyTheme(dark){
+    if(dark) {
+      document.documentElement.classList.add('dark');
+      darkSwitch.checked = true;
+      themeSub.textContent = '🌙 Dark Mode';
+      localStorage.setItem('news_theme','dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+      darkSwitch.checked = false;
+      themeSub.textContent = '🌞 Light Mode';
+      localStorage.setItem('news_theme','light');
+    }
+  }
+
+  // initial apply
+  applyTheme(isDark);
+
+  // UI interactions
+  btnSun.addEventListener('click', ()=> applyTheme(false));
+  btnMoon.addEventListener('click', ()=> applyTheme(true));
+  btnSun.addEventListener('keyup', (e)=> { if(e.key==='Enter' || e.key===' ') applyTheme(false); });
+  btnMoon.addEventListener('keyup', (e)=> { if(e.key==='Enter' || e.key===' ') applyTheme(true); });
+
+  darkSwitch.addEventListener('change', (e)=> applyTheme(e.target.checked));
+
+  // Make the whole toggle reflect state when clicking anywhere in toggle container
+  document.querySelector('.theme-toggle').addEventListener('click', (e)=>{
+    // clicking empty space toggles
+    if(e.target === document.querySelector('.theme-toggle')) {
+      applyTheme(!darkSwitch.checked);
+    }
+  });
+
+  // Accessibility: keyboard for details (supported in browsers); ensure summary is focusable
+  document.querySelectorAll('details summary').forEach(s=>{
+    s.setAttribute('tabindex','0');
+  });
+
+  // Improve focus visibility on keyboard navigation
+  window.addEventListener('keydown', (e)=> {
+    if(e.key === 'Tab') document.body.classList.add('show-focus');
+  });
+</script>
+</body>
+</html>
