@@ -6,7 +6,6 @@
 <title>Daily News — Mobile</title>
 
 <style>
-  /* Mobile-first base */
   :root{
     --bg: #ffffff;
     --surface: #ffffff;
@@ -21,7 +20,6 @@
     --tap-size: 48px;
   }
 
-  /* Dark theme variables (applied when .dark on <html>) */
   html.dark {
     --bg: #121212;
     --surface: #1E1E1E;
@@ -33,7 +31,7 @@
     --shadow: none;
   }
 
-  /* Basic page layout */
+
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body {
     margin: 0;
@@ -56,7 +54,7 @@
     gap: 12px;
   }
 
-  /* Header */
+
   header.app-header {
     display:flex;
     align-items:center;
@@ -73,7 +71,7 @@
     letter-spacing: -0.2px;
   }
 
-  /* Toggle button */
+ 
   .theme-toggle {
     display:flex;
     align-items:center;
@@ -98,7 +96,7 @@
   .sun { font-size:18px; color:#FFB74D; }
   .moon { font-size:18px; color:#81D4FA; }
 
-  /* Main list */
+
   main.feed {
     padding: 12px;
     display:flex;
@@ -169,7 +167,6 @@
     line-height: 1.5;
   }
 
-  /* Settings section */
   section.settings {
     padding: 12px;
     border-top: 1px solid var(--divider);
@@ -191,7 +188,6 @@
     margin-top:4px;
   }
 
-  /* Footer caption */
   footer.caption {
     padding: 12px;
     font-size:12px;
@@ -201,7 +197,6 @@
     line-height: 1.4;
   }
 
-  /* Bottom nav (optional small nav) */
   nav.bottom-nav {
     display:flex;
     gap:8px;
@@ -220,13 +215,11 @@
   }
   .nav-item .icon { display:block; font-size:18px; margin-bottom:4px; color: var(--body); }
 
-  /* accessible focus */
   .toggle-btn:focus, summary:focus, .nav-item:focus, .read-more:focus {
     outline: 3px solid rgba(33,150,243,0.18);
     outline-offset: 3px;
   }
 
-  /* Responsive tweaks (small mobiles) */
   @media (max-width:360px){
     .card img{ height:150px; }
     .headline{ font-size:15px; }
@@ -236,7 +229,6 @@
 <body>
 <div class="app" role="application" aria-label="Daily News mobile app">
 
-  <!-- Header -->
   <header class="app-header" role="banner">
     <div class="brand">Daily News</div>
 
@@ -250,10 +242,8 @@
     </div>
   </header>
 
-  <!-- Feed -->
   <main class="feed" role="main" aria-label="News feed">
 
-    <!-- Article 1 (uses uploaded image) -->
     <article class="card" aria-labelledby="h1">
       <img src="/mnt/data/fe0877a1-447e-4cc2-9077-faa15129c60a.png" alt="Finger on smartphone showing market graphs" />
       <div class="card-content">
@@ -267,7 +257,6 @@
       </div>
     </article>
 
-    <!-- Article 2 -->
     <article class="card" aria-labelledby="h2">
       <img src="https://images.unsplash.com/photo-1504384308090-c894fdcc538d?q=80&w=1200&auto=format&fit=crop" alt="AI technology concept on screen" />
       <div class="card-content">
@@ -281,7 +270,6 @@
       </div>
     </article>
 
-    <!-- Article 3 -->
     <article class="card" aria-labelledby="h3">
       <img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?q=80&w=1200&auto=format&fit=crop" alt="Smoggy city and climate visuals" />
       <div class="card-content">
@@ -297,7 +285,6 @@
 
   </main>
 
-  <!-- Settings -->
   <section class="settings" aria-labelledby="settings-title">
     <div style="display:flex;align-items:center;justify-content:space-between;">
       <div>
@@ -305,7 +292,6 @@
         <div class="settings-sub" id="theme-sub">🌞 Light Mode</div>
       </div>
 
-      <!-- Accessible switch (visual toggle handled by JS) -->
       <div style="display:flex;align-items:center;gap:8px;">
         <label for="dark-switch" style="display:none">Dark mode</label>
         <input id="dark-switch" type="checkbox" aria-label="Toggle dark mode" style="width:44px;height:28px" />
@@ -313,12 +299,10 @@
     </div>
   </section>
 
-  <!-- Caption -->
   <footer class="caption" role="contentinfo">
     Dark Mode improves readability in low-light environments, reduces eye strain during night reading, and can extend battery life on OLED displays. This layout uses accessible colors and contrast to meet WCAG AA guidelines.
   </footer>
 
-  <!-- Optional small bottom nav -->
   <nav class="bottom-nav" aria-label="Bottom navigation">
     <a class="nav-item" href="#" aria-label="Home">
       <span class="icon">🏠</span>Home
@@ -336,14 +320,12 @@
 </div>
 
 <script>
-  // Theme management
   const root = document.documentElement;
   const darkSwitch = document.getElementById('dark-switch');
   const btnSun = document.getElementById('btn-sun');
   const btnMoon = document.getElementById('btn-moon');
   const themeSub = document.getElementById('theme-sub');
 
-  // Determine initial theme: saved preference > prefers-color-scheme
   const saved = localStorage.getItem('news_theme');
   const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
   let isDark = (saved === 'dark') || (saved === null && prefersDark);
@@ -362,10 +344,8 @@
     }
   }
 
-  // initial apply
   applyTheme(isDark);
 
-  // UI interactions
   btnSun.addEventListener('click', ()=> applyTheme(false));
   btnMoon.addEventListener('click', ()=> applyTheme(true));
   btnSun.addEventListener('keyup', (e)=> { if(e.key==='Enter' || e.key===' ') applyTheme(false); });
@@ -373,20 +353,16 @@
 
   darkSwitch.addEventListener('change', (e)=> applyTheme(e.target.checked));
 
-  // Make the whole toggle reflect state when clicking anywhere in toggle container
   document.querySelector('.theme-toggle').addEventListener('click', (e)=>{
-    // clicking empty space toggles
     if(e.target === document.querySelector('.theme-toggle')) {
       applyTheme(!darkSwitch.checked);
     }
   });
 
-  // Accessibility: keyboard for details (supported in browsers); ensure summary is focusable
   document.querySelectorAll('details summary').forEach(s=>{
     s.setAttribute('tabindex','0');
   });
 
-  // Improve focus visibility on keyboard navigation
   window.addEventListener('keydown', (e)=> {
     if(e.key === 'Tab') document.body.classList.add('show-focus');
   });
